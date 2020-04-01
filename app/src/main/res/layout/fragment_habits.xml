@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_id"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/habit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/habit_name" />
+
+    <TextView
+        android:id="@+id/habit_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description" />
+
+    <TextView
+        android:id="@+id/habit_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/type" />
+
+    <TextView
+        android:id="@+id/habit_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/priority" />
+
+    <TextView
+        android:id="@+id/habit_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/periodicity" />
+
+    <TextView
+        android:id="@+id/habit_intencity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/intensity" />
+
+</LinearLayout>
