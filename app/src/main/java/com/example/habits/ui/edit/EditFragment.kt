@@ -1,29 +1,22 @@
 package com.example.habits.ui.edit
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.habits.MainActivity
+import com.example.habits.repositories.InMemoryHabitsRepository
 import com.example.habits.R
-import com.example.myapplication.habit.Habit
-import com.example.myapplication.habit.HabitPriority
+import com.example.habits.habit.Habit
+import com.example.habits.habit.HabitPriority
 import kotlinx.android.synthetic.main.fragment_edit.*
 
 class EditFragment : Fragment() {
-
     private val priorities: List<String> = HabitPriority.values().map { e -> e.toString() }
-
-    private lateinit var onSaveCallback: OnSaveHabitCallback
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        onSaveCallback = activity as OnSaveHabitCallback
-    }
+    private lateinit var viewModel: EditViewModel
 
     private fun initWithHabit(editHabit: Habit) {
         edit_name.setText(editHabit.name)
@@ -64,16 +57,15 @@ class EditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initSpinner()
-        var position = -1
+        val id = arguments?.getInt("ID") ?: -1
+        viewModel = EditViewModel(InMemoryHabitsRepository.getInstance(), id)
         if (arguments != null) {
-            val habit = arguments?.get("HABIT") as Habit
-            initWithHabit(habit)
-            position = (activity as MainActivity).habits.indexOf(habit)
+            initWithHabit(viewModel.habit.value!!)
         } else {
             radio_good.isChecked = true
         }
-        save_button.setOnClickListener{ view ->
+        initSpinner()
+        save_button.setOnClickListener{ v ->
             if (!checkAllEditText())
                 return@setOnClickListener
             val habit = Habit(
@@ -88,8 +80,9 @@ class EditFragment : Fragment() {
                 edit_intensity.text.toString().toInt(),
                 edit_periodicity.text.toString().toInt()
             )
-            onSaveCallback.onSave(habit, position)
-            view.findNavController().navigate(R.id.action_editFragment_to_nav_home)
+            habit.id = id
+            viewModel.model.addHabit(habit)
+            v.findNavController().navigate(R.id.action_editFragment_to_nav_home)
         }
 
     }
@@ -98,8 +91,4 @@ class EditFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit, container, false)
     }
-}
-
-interface OnSaveHabitCallback {
-    fun onSave(newHabit: Habit, position: Int = -1)
 }

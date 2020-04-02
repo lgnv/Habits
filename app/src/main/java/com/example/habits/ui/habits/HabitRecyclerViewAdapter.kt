@@ -1,4 +1,4 @@
-package com.example.homework_3
+package com.example.habits.ui.habits
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habits.R
-import com.example.myapplication.habit.Habit
+import com.example.habits.habit.Habit
 
 
 class HabitRecyclerViewAdapter(val habits: ArrayList<Habit>) : RecyclerView.Adapter<HabitRecyclerViewAdapter.ViewHolder>() {
@@ -31,19 +31,21 @@ class HabitRecyclerViewAdapter(val habits: ArrayList<Habit>) : RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(inflater.inflate(R.layout.fragment_habits, parent, false))
+        return ViewHolder(
+            inflater.inflate(R.layout.fragment_habits, parent, false)
+        )
     }
 
     override fun getItemCount(): Int = habits.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int)  {
         holder.itemView.setOnClickListener {
-            onBindCallback?.onBind(holder.itemView, position, habits[position])
+            onBindCallback?.onBind(habits[position])
         }
         holder.bind(habits[position])
     }
 }
 
 interface OnBindCallback {
-    fun onBind(view: View, position: Int, habit: Habit)
+    fun onBind(habit: Habit)
 }
