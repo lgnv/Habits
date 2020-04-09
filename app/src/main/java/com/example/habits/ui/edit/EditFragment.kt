@@ -81,6 +81,7 @@ class EditFragment : Fragment() {
             )
             viewModel.saveHabit(habit)
             v.findNavController().navigate(R.id.action_editFragment_to_nav_home)
+
         }
 
     }

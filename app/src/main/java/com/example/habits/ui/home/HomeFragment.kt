@@ -18,7 +18,7 @@ class HomeFragment : Fragment() {
         val filter = FilterFragment()
         activity!!.supportFragmentManager.beginTransaction()
             .replace(R.id.containerBottomSheet, filter)
-            .commit();
+            .commit()
         homeViewPager.adapter = HabitsPagerAdapter(this)
         TabLayoutMediator(tabs, homeViewPager) { tab, position ->
             tab.text = when(position) {
