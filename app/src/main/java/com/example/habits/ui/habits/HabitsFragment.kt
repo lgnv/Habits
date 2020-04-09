@@ -29,19 +29,16 @@ class HabitsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_habits_list, container, false)
     }
-    private fun initRecycleView() {
+    private fun initRecycleView(habits: List<Habit>) {
         recyclerView = rv.apply {
             layoutManager = LinearLayoutManager(context)
-            var habits = viewModel.showHabits.value ?: listOf()
-            habits = if (habitsType == "Bad") {
+            val filteredHabits = if (habitsType == "Bad") {
                 habits.filter { h -> h.type == "Bad" }
             } else {
                 habits.filter { h -> h.type == "Good" }
             }
-            val habitsAdapter =
-                HabitRecyclerViewAdapter(habits as ArrayList<Habit>)
-            habitsAdapter.onBindCallback = object :
-                OnBindCallback {
+            val habitsAdapter = HabitRecyclerViewAdapter(filteredHabits as ArrayList<Habit>)
+            habitsAdapter.onBindCallback = object : OnBindCallback {
                 override fun onBind(habit: Habit) {
                     navController.navigate(R.id.editFragment, Bundle().apply {
                         putInt(context.getString(R.string.key_id), habit.id!!)
@@ -57,7 +54,7 @@ class HabitsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
         viewModel.showHabits.observe(viewLifecycleOwner, Observer { habits ->
-            initRecycleView()
+            initRecycleView(habits)
         })
         App.database.habitDao().getAll().observe(viewLifecycleOwner, Observer { habits ->
             viewModel.allHabits.value = habits.toList()
