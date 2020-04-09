@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.habit.Habit
 import com.example.habits.habit.HabitPriority

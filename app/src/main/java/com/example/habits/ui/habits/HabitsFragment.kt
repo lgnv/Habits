@@ -34,10 +34,10 @@ class HabitsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             var habits = viewModel.showHabits.value ?: listOf()
             habits = if (habitsType == "Bad") {
-                    habits.filter { h -> h.type == "Bad" }
-                } else {
-                    habits.filter { h -> h.type == "Good" }
-                }
+                habits.filter { h -> h.type == "Bad" }
+            } else {
+                habits.filter { h -> h.type == "Good" }
+            }
             val habitsAdapter =
                 HabitRecyclerViewAdapter(habits as ArrayList<Habit>)
             habitsAdapter.onBindCallback = object :
@@ -60,9 +60,8 @@ class HabitsFragment : Fragment() {
             initRecycleView()
         })
         App.database.habitDao().getAll().observe(viewLifecycleOwner, Observer { habits ->
-            viewModel.showHabits.value = habits.toList().filter {
-                    habit -> (viewModel.nameFilter.value.isNullOrEmpty() || viewModel.nameFilter.value!! in habit.name)
-            }
+            viewModel.allHabits.value = habits.toList()
+
         })
     }
 

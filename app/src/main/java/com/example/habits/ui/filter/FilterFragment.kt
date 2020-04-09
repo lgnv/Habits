@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.habits.repositories.InMemoryHabitsRepository
 import com.example.habits.R
 import com.example.habits.ui.habits.HabitsViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -16,7 +15,6 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = HabitsViewModel.getInstance()
-
         filter.setOnClickListener {
             viewModel.nameFilter.postValue(search.query.toString())
         }
