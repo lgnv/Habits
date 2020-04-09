@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.habits.repositories.InMemoryHabitsRepository
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.habit.Habit
 import kotlinx.android.synthetic.main.fragment_habits_list.*
@@ -24,9 +24,7 @@ class HabitsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = HabitsViewModel.getInstance(
-            InMemoryHabitsRepository.getInstance()
-        )
+        viewModel = HabitsViewModel.getInstance()
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_habits_list, container, false)
@@ -46,7 +44,7 @@ class HabitsFragment : Fragment() {
                 OnBindCallback {
                 override fun onBind(habit: Habit) {
                     navController.navigate(R.id.editFragment, Bundle().apply {
-                        putInt(context.getString(R.string.key_id), habit.id)
+                        putInt(context.getString(R.string.key_id), habit.id!!)
                     })
                 }
             }
@@ -61,8 +59,8 @@ class HabitsFragment : Fragment() {
         viewModel.showHabits.observe(viewLifecycleOwner, Observer { habits ->
             initRecycleView()
         })
-        viewModel.model.mutableHabits.observe(viewLifecycleOwner, Observer { habits ->
-            viewModel.showHabits.value = habits.values.toList().filter {
+        App.database.habitDao().getAll().observe(viewLifecycleOwner, Observer { habits ->
+            viewModel.showHabits.value = habits.toList().filter {
                     habit -> (viewModel.nameFilter.value.isNullOrEmpty() || viewModel.nameFilter.value!! in habit.name)
             }
         })

@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.habits.repositories.InMemoryHabitsRepository
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.habit.Habit
 import com.example.habits.habit.HabitPriority
@@ -57,8 +57,8 @@ class EditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val id = arguments?.getInt("ID") ?: -1
-        viewModel = EditViewModel(InMemoryHabitsRepository.getInstance(), id)
+        val id = arguments?.getInt("ID")
+        viewModel = EditViewModel(id)
         if (arguments != null) {
             initWithHabit(viewModel.habit.value!!)
         } else {
@@ -80,8 +80,7 @@ class EditFragment : Fragment() {
                 edit_intensity.text.toString().toInt(),
                 edit_periodicity.text.toString().toInt()
             )
-            habit.id = id
-            viewModel.model.addHabit(habit)
+            viewModel.saveHabit(habit)
             v.findNavController().navigate(R.id.action_editFragment_to_nav_home)
         }
 

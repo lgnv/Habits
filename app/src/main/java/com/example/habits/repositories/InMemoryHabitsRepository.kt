@@ -17,7 +17,7 @@ class InMemoryHabitsRepository {
     }
 
     private fun updateHabit(habit: Habit) {
-        mutableHabits.value!![habit.id] = habit
+        mutableHabits.value!![habit.id!!] = habit
     }
 
     companion object {

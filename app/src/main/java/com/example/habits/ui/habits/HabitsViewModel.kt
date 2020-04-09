@@ -3,16 +3,16 @@ package com.example.habits.ui.habits
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.habits.repositories.InMemoryHabitsRepository
+import com.example.habits.App
 import com.example.habits.habit.Habit
 
-class HabitsViewModel(val model: InMemoryHabitsRepository) : ViewModel() {
+class HabitsViewModel() : ViewModel() {
     val showHabits: MediatorLiveData<List<Habit>> = MediatorLiveData()
 
     val nameFilter: MutableLiveData<String> = MutableLiveData()
 
     init {
-        showHabits.addSource(nameFilter) { name -> showHabits.value = model.mutableHabits.value!!.values.toList().filter {
+        showHabits.addSource(nameFilter) { name -> showHabits.value = showHabits.value!!.toList().filter {
                     habit -> (nameFilter.value.isNullOrEmpty() || name in habit.name)
             }
         }
@@ -20,10 +20,9 @@ class HabitsViewModel(val model: InMemoryHabitsRepository) : ViewModel() {
 
     companion object {
         private var instance: HabitsViewModel? = null
-        fun getInstance(model: InMemoryHabitsRepository): HabitsViewModel {
+        fun getInstance(): HabitsViewModel {
             if (instance == null) {
-                instance =
-                    HabitsViewModel(model)
+                instance = HabitsViewModel()
             }
             return instance!!
         }
