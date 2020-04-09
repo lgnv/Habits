@@ -1,4 +1,4 @@
-package com.example.myapplication.habit
+package com.example.habits.habit
 
 enum class HabitPriority {
     High,

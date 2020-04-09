@@ -3,42 +3,49 @@
     android:id="@+id/layout_id"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/habit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/habit_name" />
 
     <TextView
         android:id="@+id/habit_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/description" />
 
     <TextView
         android:id="@+id/habit_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/type" />
 
     <TextView
         android:id="@+id/habit_priority"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/priority" />
 
     <TextView
         android:id="@+id/habit_period"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/periodicity" />
 
     <TextView
         android:id="@+id/habit_intencity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/intensity" />
 
 </LinearLayout>

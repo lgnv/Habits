@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.habits.R
+import com.example.habits.ui.filter.FilterFragment
 import com.example.habits.ui.viewPager.HabitsPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -14,7 +15,10 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val filter = FilterFragment()
+        activity!!.supportFragmentManager.beginTransaction()
+            .replace(R.id.containerBottomSheet, filter)
+            .commit();
         homeViewPager.adapter = HabitsPagerAdapter(this)
         TabLayoutMediator(tabs, homeViewPager) { tab, position ->
             tab.text = when(position) {
