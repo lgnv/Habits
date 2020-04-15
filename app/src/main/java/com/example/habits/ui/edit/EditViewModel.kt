@@ -5,8 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.habits.App
 import com.example.habits.habit.Habit
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class EditViewModel(private val habitIndex: Int? = null): ViewModel() {
+class EditViewModel(private val habitIndex: Int? = null
+): ViewModel(), CoroutineScope {
+    private  val job = SupervisorJob();
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job + CoroutineExceptionHandler { _, e -> throw e }
+
     val habit: LiveData<Habit?>
         get() = if (habitIndex != null) {
             MutableLiveData(App.database.habitDao().getById(habitIndex))
@@ -14,13 +22,13 @@ class EditViewModel(private val habitIndex: Int? = null): ViewModel() {
             MutableLiveData<Habit>()
         }
 
-    fun saveHabit(habit: Habit) {
+    fun saveHabit(habit: Habit) = launch {
         App.database.habitDao().apply {
             if (habitIndex == null) {
-                insert(habit)
+                withContext(Dispatchers.IO) { insert(habit) }
             } else {
                 habit.id = habitIndex
-                update(habit)
+                withContext(Dispatchers.IO) { update(habit) }
             }
         }
     }

@@ -9,7 +9,6 @@ import com.example.habits.habit.Habit
 
 @Dao
 interface HabitDao {
-
     @Query("SELECT * FROM habit")
     fun getAll(): LiveData<List<Habit>>
 

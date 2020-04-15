@@ -12,6 +12,9 @@ import com.example.habits.R
 import com.example.habits.habit.Habit
 import com.example.habits.habit.HabitPriority
 import kotlinx.android.synthetic.main.fragment_edit.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class EditFragment : Fragment() {
     private val priorities: List<String> = HabitPriority.values().map { e -> e.toString() }
