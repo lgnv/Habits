@@ -56,10 +56,6 @@ class HabitsFragment : Fragment() {
         viewModel.showHabits.observe(viewLifecycleOwner, Observer { habits ->
             initRecycleView(habits)
         })
-        App.database.habitDao().getAll().observe(viewLifecycleOwner, Observer { habits ->
-            viewModel.allHabits.value = habits.toList()
-
-        })
     }
 
     companion object {

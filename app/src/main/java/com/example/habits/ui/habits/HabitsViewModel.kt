@@ -3,6 +3,7 @@ package com.example.habits.ui.habits
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.habits.App
 import com.example.habits.habit.Habit
 
 class HabitsViewModel : ViewModel() {
@@ -12,9 +13,13 @@ class HabitsViewModel : ViewModel() {
     val nameFilter: MutableLiveData<String> = MutableLiveData("")
 
     init {
-        showHabits.addSource(nameFilter) { name -> showHabits.value = (allHabits.value ?: listOf()).toList().filter {
+        showHabits.addSource(nameFilter) { name ->
+            showHabits.value = (allHabits.value ?: listOf()).toList().filter {
                 habit -> (nameFilter.value.isNullOrEmpty() || name in habit.name)
             }
+        }
+        allHabits.addSource(App.database.habitDao().getAll()) { habits ->
+            allHabits.value = habits
         }
     }
 
