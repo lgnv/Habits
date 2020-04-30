@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.habit.Habit
 import kotlinx.android.synthetic.main.fragment_habits_list.*
@@ -33,15 +32,15 @@ class HabitsFragment : Fragment() {
         recyclerView = rv.apply {
             layoutManager = LinearLayoutManager(context)
             val filteredHabits = if (habitsType == "Bad") {
-                habits.filter { h -> h.type == "Bad" }
+                habits.filter { h -> h.type.titleType == "Bad" }
             } else {
-                habits.filter { h -> h.type == "Good" }
+                habits.filter { h -> h.type.titleType == "Good" }
             }
             val habitsAdapter = HabitRecyclerViewAdapter(filteredHabits as ArrayList<Habit>)
             habitsAdapter.onBindCallback = object : OnBindCallback {
                 override fun onBind(habit: Habit) {
                     navController.navigate(R.id.editFragment, Bundle().apply {
-                        putInt(context.getString(R.string.key_id), habit.id!!)
+                        putString(context.getString(R.string.key_id), habit.uid!!)
                     })
                 }
             }

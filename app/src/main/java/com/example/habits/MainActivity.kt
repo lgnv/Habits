@@ -10,6 +10,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +29,15 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_info), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val headerView = navView.getHeaderView(0)
+        Glide.with(this)
+            .load("https://im0-tub-ru.yandex.net/i?id=2d995ea35c732d20a76cde4cbf28e5cd&n=13")
+            .override(250, 250)
+            .placeholder(R.mipmap.ic_launcher_round)
+            .error(R.drawable.placeholder)
+            .transform(CircleCrop())
+            .into(headerView.findViewById(R.id.avatar))
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,4 +1,4 @@
-package com.example.habits.repositories
+/*package com.example.habits.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,14 +10,14 @@ class InMemoryHabitsRepository {
 
 
     fun addHabit(habit: Habit) {
-        if (habit.id == -1) {
-            habit.id = mutableHabits.value!!.size
+        if (habit.uid == -1) {
+            habit.uid = mutableHabits.value!!.size
         }
         updateHabit(habit)
     }
 
     private fun updateHabit(habit: Habit) {
-        mutableHabits.value!![habit.id!!] = habit
+        mutableHabits.value!![habit.uid!!] = habit
     }
 
     companion object {
@@ -31,3 +31,4 @@ class InMemoryHabitsRepository {
         }
     }
 }
+*/

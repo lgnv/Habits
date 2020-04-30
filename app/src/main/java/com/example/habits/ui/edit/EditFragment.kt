@@ -8,28 +8,28 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.habit.Habit
 import com.example.habits.habit.HabitPriority
+import com.example.habits.habit.HabitType
 import kotlinx.android.synthetic.main.fragment_edit.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import java.util.*
 
 class EditFragment : Fragment() {
     private val priorities: List<String> = HabitPriority.values().map { e -> e.toString() }
     private lateinit var viewModel: EditViewModel
 
     private fun initWithHabit(editHabit: Habit) {
-        edit_name.setText(editHabit.name)
+        edit_name.setText(editHabit.title)
         edit_description.setText(editHabit.description)
-        edit_intensity.setText(editHabit.intensity.toString())
-        edit_periodicity.setText(editHabit.periodicity.toString())
-        when(editHabit.type) {
+        edit_intensity.setText(editHabit.count.toString())
+        edit_periodicity.setText(editHabit.frequency.toString())
+        when(editHabit.type.titleType) {
             "Good" -> radio_good.isChecked = true
             "Bad" -> radio_bad.isChecked = true
         }
-        spinner.setSelection(priorities.indexOf(editHabit.priority))
+        spinner.setSelection(editHabit.priority.numberPriority)
     }
 
     private fun initSpinner() {
@@ -59,10 +59,10 @@ class EditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val id = arguments?.getInt("ID")
-        viewModel = EditViewModel(id)
+        val id = arguments?.getString("ID")
+        viewModel = EditViewModel(id, App.habitRepository)
         if (arguments != null) {
-            initWithHabit(viewModel.habit.value!!)
+            viewModel.habit.observe(viewLifecycleOwner, androidx.lifecycle.Observer { initWithHabit(it!!) } )
         } else {
             radio_good.isChecked = true
         }
@@ -73,20 +73,20 @@ class EditFragment : Fragment() {
             val habit = Habit(
                 edit_name.text.toString().trim(),
                 edit_description.text.toString().trim(),
-                priorities[spinner.selectedItemPosition],
-                when (radio_group.checkedRadioButtonId) {
+                HabitPriority.getByValue(spinner.selectedItemPosition),
+                HabitType.getByTitle(when (radio_group.checkedRadioButtonId) {
                     radio_good.id -> radio_good.text
                     radio_bad.id -> radio_bad.text
                     else -> throw Error()
-                }.toString(),
+                }.toString()),
                 edit_intensity.text.toString().toInt(),
-                edit_periodicity.text.toString().toInt()
+                edit_periodicity.text.toString().toInt(),
+                (Date().time / 1000).toInt()
             )
+            habit.uid = id
             viewModel.saveHabit(habit)
             v.findNavController().navigate(R.id.action_editFragment_to_nav_home)
-
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

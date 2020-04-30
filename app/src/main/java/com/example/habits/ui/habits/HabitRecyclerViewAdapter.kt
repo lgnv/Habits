@@ -20,11 +20,11 @@ class HabitRecyclerViewAdapter(val habits: ArrayList<Habit>) : RecyclerView.Adap
         private val habitPeriodicity: TextView = itemView.findViewById(R.id.habit_period)
 
         fun bind(habit: Habit) {
-            habitName.text = "Habit name: ${habit.name}"
+            habitName.text = "Habit name: ${habit.title}"
             habitDescription.text = "Description: ${habit.description}"
-            habitIntensity.text = "Intensity: fill ${habit.intensity} times"
+            habitIntensity.text = "Intensity: fill ${habit.count} times"
             habitPriority.text = "Priority: ${habit.priority}"
-            habitPeriodicity.text = "Periodicity: perform in ${habit.periodicity} days"
+            habitPeriodicity.text = "Periodicity: perform in ${habit.frequency} days"
             habitType.text = "Type: ${habit.type}"
         }
     }
